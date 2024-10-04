@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.devkt.blogapp.databinding.ActivitySignInAndRegistrationBinding
+import com.devkt.blogapp.register.WelcomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -36,7 +37,8 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
             insets
         }
         auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
+        database =
+            FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
         storage = FirebaseStorage.getInstance()
 
         val action = intent.getStringExtra("action")
@@ -53,6 +55,26 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
             binding.registerUserEmail.visibility = View.GONE
             binding.registerUserPassword.visibility = View.GONE
             binding.cardView.visibility = View.GONE
+
+            binding.loginbtn.setOnClickListener {
+                val loginEmail = binding.editTextTextEmailAddress.text.toString()
+                val loginPassword = binding.editTextTextPassword.text.toString()
+                if (loginEmail.isEmpty() || loginPassword.isEmpty()) {
+                    Toast.makeText(this, "Please Fill All Details", Toast.LENGTH_SHORT).show()
+                } else {
+                    auth.signInWithEmailAndPassword(loginEmail, loginPassword)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                }
+            }
         } else if (action == "register") {
             binding.loginbtn.isEnabled = false
             binding.loginbtn.alpha = 0.5f
@@ -78,10 +100,18 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
                                     val storageReference =
                                         storage.reference.child("profile_images/$userId.jpg")
                                     storageReference.putFile(imageUri!!)
-                                    Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this,
+                                        "Registered Successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val intent = Intent(this, WelcomeActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
                                 }
                             } else {
-
+                                Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
                 }
