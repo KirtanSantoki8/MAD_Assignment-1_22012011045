@@ -1,20 +1,31 @@
 package com.devkt.blogapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.service.autofill.UserData
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.devkt.blogapp.databinding.ActivitySignInAndRegistrationBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 
 class SignInAndRegistrationActivity : AppCompatActivity() {
     private val binding: ActivitySignInAndRegistrationBinding by lazy {
         ActivitySignInAndRegistrationBinding.inflate(layoutInflater)
     }
     private lateinit var auth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase
+    private lateinit var storage: FirebaseStorage
+    private val PICK_IMAGE_REQUEST = 1
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,9 +36,11 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
             insets
         }
         auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
+        storage = FirebaseStorage.getInstance()
 
         val action = intent.getStringExtra("action")
-        if(action == "login"){
+        if (action == "login") {
             binding.editTextTextEmailAddress.visibility = View.VISIBLE
             binding.editTextTextPassword.visibility = View.VISIBLE
             binding.loginbtn.visibility = View.VISIBLE
@@ -40,29 +53,55 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
             binding.registerUserEmail.visibility = View.GONE
             binding.registerUserPassword.visibility = View.GONE
             binding.cardView.visibility = View.GONE
-        }
-        else if(action == "register"){
+        } else if (action == "register") {
             binding.loginbtn.isEnabled = false
             binding.loginbtn.alpha = 0.5f
             binding.registerbtn.setOnClickListener {
                 val register_name = binding.registerUserName.text.toString()
                 val register_email = binding.registerUserEmail.text.toString()
                 val register_password = binding.registerUserPassword.text.toString()
-                if (register_name.isEmpty() || register_email.isEmpty() || register_password.isEmpty()){
+                if (register_name.isEmpty() || register_email.isEmpty() || register_password.isEmpty()) {
                     Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    auth.createUserWithEmailAndPassword(register_email,register_password)
-                        .addOnCompleteListener{ task ->
-                            if (task.isSuccessful){
-
-                            }
-                            else{
+                } else {
+                    auth.createUserWithEmailAndPassword(register_email, register_password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val user = auth.currentUser
+                                user?.let {
+                                    val userReference = database.getReference("users")
+                                    val userId = user.uid
+                                    val userData = com.devkt.blogapp.Model.UserData(
+                                        register_name,
+                                        register_email
+                                    )
+                                    userReference.child(userId).setValue(userData)
+                                    val storageReference =
+                                        storage.reference.child("profile_images/$userId.jpg")
+                                    storageReference.putFile(imageUri!!)
+                                    Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
 
                             }
                         }
                 }
             }
         }
+        binding.cardView.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null)
+            imageUri = data.data
+        Glide.with(this).load(imageUri)
+            .load(imageUri)
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.registerUserImage)
     }
 }
