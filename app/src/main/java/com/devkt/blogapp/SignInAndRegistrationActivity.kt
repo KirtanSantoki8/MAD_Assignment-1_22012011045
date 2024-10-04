@@ -89,6 +89,7 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 val user = auth.currentUser
+                                auth.signOut()
                                 user?.let {
                                     val userReference = database.getReference("users")
                                     val userId = user.uid
