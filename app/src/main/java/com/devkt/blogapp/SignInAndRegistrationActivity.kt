@@ -101,6 +101,13 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
                                     val storageReference =
                                         storage.reference.child("profile_images/$userId.jpg")
                                     storageReference.putFile(imageUri!!)
+                                        .addOnCompleteListener { task ->
+                                            storageReference.downloadUrl.addOnCompleteListener { imageUri ->
+                                                val imgUrl = imageUri.result.toString()
+                                                userReference.child(userId).child("profileImage")
+                                                    .setValue(imgUrl)
+                                            }
+                                        }
                                     Toast.makeText(
                                         this,
                                         "Registered Successfully",
