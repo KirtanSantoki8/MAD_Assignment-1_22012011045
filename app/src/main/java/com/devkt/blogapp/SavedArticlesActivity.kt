@@ -1,5 +1,6 @@
 package com.devkt.blogapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
@@ -69,7 +70,7 @@ class SavedArticlesActivity : AppCompatActivity() {
         }
         val backBtn = findViewById<ImageButton>(R.id.backButton)
         backBtn.setOnClickListener {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
