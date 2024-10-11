@@ -8,8 +8,10 @@ data class BlogItemModel(
     val userName: String? = "null",
     val date: String? = "null",
     val post: String? = "null",
-    val likeCount: Int = 0,
-    val profileImage: String? = "null"
+    var likeCount: Int = 0,
+    val profileImage: String? = "null",
+    var postId: String? = "null",
+    val likedBy: MutableList<String>? = null
 ): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -17,6 +19,7 @@ data class BlogItemModel(
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
+        parcel.readString(),
         parcel.readString()
     ) {
     }
@@ -28,6 +31,7 @@ data class BlogItemModel(
         parcel.writeString(post)
         parcel.writeInt(likeCount)
         parcel.writeString(profileImage)
+        parcel.writeString(postId)
     }
 
     override fun describeContents(): Int {

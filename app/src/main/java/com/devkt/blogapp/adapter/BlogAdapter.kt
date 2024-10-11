@@ -1,16 +1,29 @@
 package com.devkt.blogapp.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.devkt.blogapp.Model.BlogItemModel
+import com.devkt.blogapp.R
 import com.devkt.blogapp.ReadMoreActivity
 import com.devkt.blogapp.databinding.BlogItemsBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class BlogAdapter(private val items: List<BlogItemModel>) :
     RecyclerView.Adapter<BlogAdapter.BlogViewHolder>() {
+
+    private val databaseReference: DatabaseReference =
+        FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+    private val currentUser = FirebaseAuth.getInstance().currentUser
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogViewHolder {
         var inflater = LayoutInflater.from(parent.context)
@@ -30,8 +43,11 @@ class BlogAdapter(private val items: List<BlogItemModel>) :
     inner class BlogViewHolder(private val binding: BlogItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(blogItemModel: BlogItemModel) {
+            val postId = blogItemModel.postId ?: ""
+            val context = binding.root.context
             binding.heading.text = blogItemModel.heading
-            Glide.with(binding.profile.context).load(blogItemModel.profileImage).into(binding.profile)
+            Glide.with(binding.profile.context).load(blogItemModel.profileImage)
+                .into(binding.profile)
             binding.userName.text = blogItemModel.userName
             binding.date.text = blogItemModel.date
             binding.post.text = blogItemModel.post
@@ -42,7 +58,82 @@ class BlogAdapter(private val items: List<BlogItemModel>) :
                 intent.putExtra("blogItem", blogItemModel)
                 context.startActivity(intent)
             }
-        }
+            val postLikeRef = databaseReference.child("blogs").child(postId).child("likes")
+            val currentUserLiked = currentUser?.uid?.let { uid ->
+                postLikeRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            binding.likeBtn.setImageResource(R.drawable.like_red)
+                        } else {
+                            binding.likeBtn.setImageResource(R.drawable.like_black)
+                        }
+                    }
 
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
+            }
+            binding.likeBtn.setOnClickListener {
+                if (currentUser != null) {
+                    handleLikedButtenClick(postId, blogItemModel, binding)
+                } else {
+                    Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun handleLikedButtenClick(postId: String, blogItemModel: BlogItemModel, binding: BlogItemsBinding) {
+        val userReference = databaseReference.child("users").child(currentUser!!.uid)
+        val postLikeReference = databaseReference.child("blogs").child(postId).child("likes")
+        postLikeReference.child(currentUser.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        userReference.child("likes").child(postId).removeValue()
+                            .addOnSuccessListener {
+                                postLikeReference.child(currentUser.uid).removeValue()
+                                blogItemModel.likedBy?.remove(currentUser.uid)
+                                updateLikedButtonImage(binding,false)
+                                val newLikeCount = blogItemModel.likeCount - 1
+                                blogItemModel.likeCount = newLikeCount
+                                databaseReference.child("blogs").child(postId).child("likeCount").setValue(newLikeCount)
+                                notifyDataSetChanged()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("LikeClick","Fail to unlike $e")
+                            }
+                    }
+                    else{
+                        userReference.child("likes").child(postId).setValue(true)
+                            .addOnSuccessListener {
+                                postLikeReference.child(currentUser.uid).setValue(true)
+                                blogItemModel.likedBy?.add(currentUser.uid)
+                                updateLikedButtonImage(binding,true)
+                                val newLikeCount = blogItemModel.likeCount + 1
+                                blogItemModel.likeCount = newLikeCount
+                                databaseReference.child("blogs").child(postId).child("likeCount").setValue(newLikeCount)
+                                notifyDataSetChanged()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("LikeClick","Fail to like $e")
+                            }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
+    private fun updateLikedButtonImage(binding: BlogItemsBinding,liked: Boolean) {
+        if (liked) {
+            binding.likeBtn.setImageResource(R.drawable.like_black)
+        }
+        else{
+            binding.likeBtn.setImageResource(R.drawable.like_red)
+        }
     }
 }

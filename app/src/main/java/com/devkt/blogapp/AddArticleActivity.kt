@@ -70,6 +70,7 @@ class AddArticleActivity : AppCompatActivity() {
                                 )
                                 val key = databaseReference.push().key
                                 if (key != null) {
+                                    blogItem.postId = key
                                     val blogRef = databaseReference.child(key)
                                     blogRef.setValue(blogItem).addOnCompleteListener {
                                         if (it.isSuccessful) {
