@@ -37,6 +37,9 @@ class AddArticleActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        binding.imageButton.setOnClickListener {
+            finish()
+        }
         binding.addBlogBtn.setOnClickListener {
             val blogTitle = binding.blogTitle.editText?.text.toString().trim()
             val blogDescription = binding.blogDescription.editText?.text.toString().trim()

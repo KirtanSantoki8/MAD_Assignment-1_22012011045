@@ -1,10 +1,12 @@
 package com.devkt.blogapp.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.devkt.blogapp.Model.BlogItemModel
+import com.devkt.blogapp.ReadMoreActivity
 import com.devkt.blogapp.databinding.BlogItemsBinding
 
 class BlogAdapter(private val items: List<BlogItemModel>) :
@@ -17,7 +19,8 @@ class BlogAdapter(private val items: List<BlogItemModel>) :
     }
 
     override fun onBindViewHolder(holder: BlogViewHolder, position: Int) {
-        holder.bind(items[position])
+        val blogItem = items[position]
+        holder.bind(blogItem)
     }
 
     override fun getItemCount(): Int {
@@ -33,6 +36,12 @@ class BlogAdapter(private val items: List<BlogItemModel>) :
             binding.date.text = blogItemModel.date
             binding.post.text = blogItemModel.post
             binding.likeCount.text = blogItemModel.likeCount.toString()
+            binding.root.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, ReadMoreActivity::class.java)
+                intent.putExtra("blogItem", blogItemModel)
+                context.startActivity(intent)
+            }
         }
 
     }

@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                     if (blogItem != null) {
                         blogItems.add(blogItem)
                     }
+                    blogItems.reverse()
                     blogAdapter.notifyDataSetChanged()
                 }
             }
