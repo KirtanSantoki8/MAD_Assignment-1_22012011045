@@ -11,6 +11,7 @@ data class BlogItemModel(
     var likeCount: Int = 0,
     val profileImage: String? = "null",
     var postId: String? = "null",
+    var isSaved: Boolean = false,
     val likedBy: MutableList<String>? = null
 ): Parcelable{
     constructor(parcel: Parcel) : this(
@@ -20,7 +21,8 @@ data class BlogItemModel(
         parcel.readString(),
         parcel.readInt(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readByte() != 0.toByte()
     ) {
     }
 
