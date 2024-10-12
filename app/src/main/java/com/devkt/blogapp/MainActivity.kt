@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
         binding.saveArticleBtn.setOnClickListener {
             startActivity(Intent(this, SavedArticlesActivity::class.java))
         }
+        binding.profileImg.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
         auth = FirebaseAuth.getInstance()
         databaseReference =
             FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").reference.child(

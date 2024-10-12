@@ -6,4 +6,5 @@
     <color name="blue">#00A3FF</color>
     <color name="light_white">#EFEFEF</color>
     <color name="dateColor">#C8C8C8</color>
+    <color name="profileBg">#4E4E4E</color>
 </resources>
