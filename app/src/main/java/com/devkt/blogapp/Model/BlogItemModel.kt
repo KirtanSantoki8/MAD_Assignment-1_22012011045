@@ -11,6 +11,7 @@ data class BlogItemModel(
     var likeCount: Int = 0,
     val profileImage: String? = "null",
     var postId: String? = "null",
+    val userId: String? = "null",
     var isSaved: Boolean = false,
     val likedBy: MutableList<String>? = null
 ): Parcelable{
@@ -20,6 +21,7 @@ data class BlogItemModel(
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readByte() != 0.toByte()
@@ -34,6 +36,7 @@ data class BlogItemModel(
         parcel.writeInt(likeCount)
         parcel.writeString(profileImage)
         parcel.writeString(postId)
+        parcel.writeString(userId)
     }
 
     override fun describeContents(): Int {

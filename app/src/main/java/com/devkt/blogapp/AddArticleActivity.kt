@@ -66,7 +66,9 @@ class AddArticleActivity : AppCompatActivity() {
                                     currentDate,
                                     blogDescription,
                                     0,
-                                    userImageUrlFromDb
+                                    userImageUrlFromDb,
+                                    postId = null,
+                                    userId
                                 )
                                 val key = databaseReference.push().key
                                 if (key != null) {
