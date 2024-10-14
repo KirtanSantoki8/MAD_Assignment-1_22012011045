@@ -4,10 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class BlogItemModel(
-    val heading: String? = "null",
+    var heading: String? = "null",
     val userName: String? = "null",
     val date: String? = "null",
-    val post: String? = "null",
+    var post: String? = "null",
     var likeCount: Int = 0,
     val profileImage: String? = "null",
     var postId: String? = "null",
@@ -37,6 +37,7 @@ data class BlogItemModel(
         parcel.writeString(profileImage)
         parcel.writeString(postId)
         parcel.writeString(userId)
+        parcel.writeByte(if (isSaved) 1 else 0)
     }
 
     override fun describeContents(): Int {

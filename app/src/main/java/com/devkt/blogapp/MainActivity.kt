@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private val blogItems = mutableListOf<BlogItemModel>()
     private lateinit var auth: FirebaseAuth
+    private lateinit var blogAdapter: BlogAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         binding.profileImg.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+//        blogAdapter = BlogAdapter(this,)
         auth = FirebaseAuth.getInstance()
         databaseReference =
             FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").reference.child(

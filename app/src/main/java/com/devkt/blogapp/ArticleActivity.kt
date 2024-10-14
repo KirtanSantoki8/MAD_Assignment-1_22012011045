@@ -1,5 +1,6 @@
 package com.devkt.blogapp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -25,6 +26,7 @@ class ArticleActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private var auth = FirebaseAuth.getInstance()
     private lateinit var articleAdapter: ArticleAdapter
+    private val EDIT_BLOG_REQUEST_CODE = 12
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,24 +37,30 @@ class ArticleActivity : AppCompatActivity() {
             insets
         }
         binding.backBtn.setOnClickListener {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
         val currentUserId = auth.currentUser?.uid
         val recyclerView = binding.articleRecycler
         recyclerView.layoutManager = LinearLayoutManager(this)
-        articleAdapter = ArticleAdapter(this, emptyList(),object : ArticleAdapter.OnItemClickListener{
-            override fun onEditClick(blogItem: BlogItemModel) {
+        if (currentUserId != null) {
+            articleAdapter = ArticleAdapter(this, emptyList(),object : ArticleAdapter.OnItemClickListener{
+                override fun onEditClick(blogItem: BlogItemModel) {
+                    val intent = Intent(this@ArticleActivity, EditBlogActivity::class.java)
+                    intent.putExtra("blogItem", blogItem)
+                    startActivityForResult(intent,EDIT_BLOG_REQUEST_CODE)
+                }
 
-            }
+                override fun onReadMoreClick(blogItem: BlogItemModel) {
+                    val intent = Intent(this@ArticleActivity, ReadMoreActivity::class.java)
+                    intent.putExtra("blogItem", blogItem)
+                    startActivity(intent)
+                }
 
-            override fun onReadMoreClick(blogItem: BlogItemModel) {
-
-            }
-
-            override fun onDeleteClick(blogItem: BlogItemModel) {
-
-            }
-        })
+                override fun onDeleteClick(blogItem: BlogItemModel) {
+                    deleteBlog(blogItem)
+                }
+            })
+        }
         recyclerView.adapter = articleAdapter
         databaseReference = FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("blogs")
         databaseReference.addValueEventListener(object : ValueEventListener{
@@ -71,5 +79,20 @@ class ArticleActivity : AppCompatActivity() {
                 Toast.makeText(this@ArticleActivity, "Failed to load", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun deleteBlog(blogItem: BlogItemModel) {
+        val postId = blogItem.postId
+        val blogPostRef = postId?.let { databaseReference.child(it) }
+        blogPostRef?.removeValue()?.addOnSuccessListener {
+            Toast.makeText(this, "Blog Removed...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == EDIT_BLOG_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+
+        }
     }
 }

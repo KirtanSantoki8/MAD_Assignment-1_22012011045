@@ -52,6 +52,15 @@ class ArticleAdapter(
             binding.userName.text = blogItem.userName
             binding.date.text = blogItem.date
             binding.post.text = blogItem.post
+            binding.readmoreBtn.setOnClickListener {
+                itemClickListener.onReadMoreClick(blogItem)
+            }
+            binding.editBlog.setOnClickListener {
+                itemClickListener.onEditClick(blogItem)
+            }
+            binding.deleteBlog.setOnClickListener {
+                itemClickListener.onDeleteClick(blogItem)
+            }
         }
 
     }

@@ -101,45 +101,45 @@
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <Button
-            android:id="@+id/add_blog_btn"
+            android:id="@+id/readmore_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/blue"
             android:text="Read More"
             app:cornerRadius="9dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/edit_blog"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/edit_blog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/black"
             android:text="Edit"
             app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/add_blog_btn"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintBottom_toBottomOf="@+id/readmore_btn"
+            app:layout_constraintEnd_toStartOf="@+id/delete_blog"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/add_blog_btn"
-            app:layout_constraintTop_toTopOf="@+id/add_blog_btn" />
+            app:layout_constraintStart_toEndOf="@+id/readmore_btn"
+            app:layout_constraintTop_toTopOf="@+id/readmore_btn" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/delete_blog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red"
             android:text="Delete"
             app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/button"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_blog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button" />
+            app:layout_constraintStart_toEndOf="@+id/edit_blog"
+            app:layout_constraintTop_toTopOf="@+id/edit_blog" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
