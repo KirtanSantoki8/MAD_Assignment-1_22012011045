@@ -71,6 +71,7 @@ class ArticleActivity : AppCompatActivity() {
                     if (blogSaved != null && currentUserId == blogSaved.userId) {
                         blogSavedList.add(blogSaved)
                     }
+                    blogSavedList.reverse()
                 }
                 articleAdapter.setData(blogSavedList)
             }

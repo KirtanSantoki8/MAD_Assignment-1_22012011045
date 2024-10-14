@@ -1,5 +1,6 @@
 package com.devkt.blogapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -24,9 +25,11 @@ class AddArticleActivity : AppCompatActivity() {
         ActivityAddArticleBinding.inflate(layoutInflater)
     }
     private val databaseReference: DatabaseReference =
-        FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("blogs")
+        FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
+            .getReference("blogs")
     private val userReference: DatabaseReference =
-        FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users")
+        FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
+            .getReference("users")
     private val auth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +79,7 @@ class AddArticleActivity : AppCompatActivity() {
                                     val blogRef = databaseReference.child(key)
                                     blogRef.setValue(blogItem).addOnCompleteListener {
                                         if (it.isSuccessful) {
-                                            finish()
+                                            startActivity(Intent(this@AddArticleActivity, MainActivity::class.java))
                                         } else {
                                             Toast.makeText(
                                                 this@AddArticleActivity,
