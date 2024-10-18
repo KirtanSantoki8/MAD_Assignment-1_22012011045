@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private val blogItems = mutableListOf<BlogItemModel>()
     private lateinit var auth: FirebaseAuth
-    private lateinit var blogAdapter: BlogAdapter
+//    private lateinit var blogAdapter: BlogAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
