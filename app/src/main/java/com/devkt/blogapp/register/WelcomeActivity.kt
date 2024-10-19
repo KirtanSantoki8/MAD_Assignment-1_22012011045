@@ -31,13 +31,13 @@ class WelcomeActivity : AppCompatActivity() {
             val intent = Intent(this, SignInAndRegistrationActivity::class.java)
             intent.putExtra("action","login")
             startActivity(intent)
-            finish()
+//            finish()
         }
         binding.registerbtn.setOnClickListener {
             val intent = Intent(this, SignInAndRegistrationActivity::class.java)
             intent.putExtra("action","register")
             startActivity(intent)
-            finish()
+//            finish()
         }
     }
 
