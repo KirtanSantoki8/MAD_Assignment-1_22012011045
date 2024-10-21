@@ -37,8 +37,7 @@ class SignInAndRegistrationActivity : AppCompatActivity() {
             insets
         }
         auth = FirebaseAuth.getInstance()
-        database =
-            FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
+        database = FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app")
         storage = FirebaseStorage.getInstance()
 
         val action = intent.getStringExtra("action")
