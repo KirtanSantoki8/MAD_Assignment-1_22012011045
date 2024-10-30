@@ -1,8 +1,6 @@
 package com.devkt.blogapp
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -46,10 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 //        blogAdapter = BlogAdapter(this,)
         auth = FirebaseAuth.getInstance()
-        databaseReference =
-            FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").reference.child(
-                "blogs"
-            )
+        databaseReference = FirebaseDatabase.getInstance("https://blog-app-1f5b8-default-rtdb.asia-southeast1.firebasedatabase.app").reference.child("blogs")
         val userId = auth.currentUser?.uid
         if (userId != null) {
             loadUserProfileImage(userId)
