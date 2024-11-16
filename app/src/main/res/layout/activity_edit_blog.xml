@@ -37,7 +37,7 @@
         android:layout_marginTop="60dp"
         android:fontFamily="@font/love_ya_like_a_sister"
         android:text="Blog Title"
-        android:textColor="@color/black"
+        android:textColor="@color/font"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -70,7 +70,7 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/love_ya_like_a_sister"
         android:text="Blog Description"
-        android:textColor="@color/black"
+        android:textColor="@color/font"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/blog_title"
         app:layout_constraintTop_toBottomOf="@+id/blog_title" />
@@ -92,7 +92,7 @@
             android:fontFamily="@font/montserrat_light"
             android:gravity="top"
             android:hint="Blog Description"
-            android:textColor="@color/black" />
+            android:textColor="@color/font" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

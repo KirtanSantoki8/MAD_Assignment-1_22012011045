@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="264dp"
     app:cardElevation="2dp"
+    android:backgroundTint="@color/white"
     android:layout_marginTop="10dp"
     app:cardCornerRadius="9dp">
 
@@ -57,7 +58,7 @@
             android:padding="5dp"
             android:text="New Blogger"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/blck"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -78,6 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="6dp"
+            android:backgroundTint="@color/blck"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="@id/user_name"
             app:layout_constraintStart_toStartOf="@+id/heading"
@@ -93,7 +95,7 @@
             android:lineHeight="22sp"
             android:maxLines="4"
             android:text="I recently read a helpful article on Hashnode by Simon Egersand titled Write Git Commit Messages Your Colleagues Will Love, and it inspired me to dive a little deeper into understanding what makes a Git commit good or bad."
-            android:textColor="@color/black"
+            android:textColor="@color/blck"
             app:layout_constraintEnd_toEndOf="@+id/divider"
             app:layout_constraintStart_toStartOf="@+id/divider"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
@@ -105,6 +107,7 @@
             android:backgroundTint="@color/blue"
             android:text="Read More"
             app:cornerRadius="9dp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/post"
             app:layout_constraintTop_toBottomOf="@+id/post" />
@@ -116,7 +119,7 @@
             android:layout_marginStart="40dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="20"
-            android:textColor="@color/black"
+            android:textColor="@color/blck"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/readmore_btn"
             app:layout_constraintStart_toEndOf="@+id/readmore_btn"

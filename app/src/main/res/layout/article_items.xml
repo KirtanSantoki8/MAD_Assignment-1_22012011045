@@ -59,7 +59,7 @@
             android:padding="5dp"
             android:text="New Blogger"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/font"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +95,7 @@
             android:lineHeight="22sp"
             android:maxLines="4"
             android:text="I recently read a helpful article on Hashnode by Simon Egersand titled Write Git Commit Messages Your Colleagues Will Love, and it inspired me to dive a little deeper into understanding what makes a Git commit good or bad."
-            android:textColor="@color/black"
+            android:textColor="@color/font"
             app:layout_constraintEnd_toEndOf="@+id/divider"
             app:layout_constraintStart_toStartOf="@+id/divider"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
@@ -119,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/blck"
             android:text="Edit"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/readmore_btn"

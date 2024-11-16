@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="font">#FFFFFFFF</color>
+    <color name="card">#FF000000</color>
+    <color name="search">#4E4E4E</color>
+</resources>
